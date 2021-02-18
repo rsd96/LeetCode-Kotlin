@@ -21,27 +21,40 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 class Solution {
     fun merge(intervals: Array<IntArray>): Array<IntArray> {
         
+        /**
+        Sort intervals to be in sequence 
+        e.g: 
+         1 - - 4
+           2 - - 5
+                   6 - - - 10
+        */
         
         intervals.sortBy { it[0] }
         
+        // get first interval as first candidate
         var start = intervals[0][0]
         var end = intervals[0][1]
-        
+     
+        // array to store merged intervals 
         var res = arrayListOf<IntArray>()
         
         intervals.forEach {
             val currIntervalStart = it[0]
             val currIntervalEnd = it[1] 
-            
+            // Check if current interval falls out of candidate interval 
             if (currIntervalStart > end) {
+                // add previous candidate to res and make current interval the new candidate 
                 res.add(intArrayOf(start, end))
                 start = currIntervalStart
                 end = currIntervalEnd
             }else {
+                // if interval marges with candidate interval then update end if 
+               //  current end is greater than candidate
                 if (currIntervalEnd > end)
                     end = currIntervalEnd
             }
         }
+        // add final candidate to the res
         res.add(intArrayOf(start, end))
         
         
